@@ -2,9 +2,7 @@ import os
 import time
 import json
 import datetime
-from urllib.request import urlopen
-
-
+import requests
 
 
 class WeatherInfo():
@@ -121,12 +119,12 @@ class OpenWeatherMap():
         return  OpenWeatherMap.MakeCoordinateKey(latitude) + OpenWeatherMap.MakeCoordinateKey(longitude)
 
     def FromWWW(self):
-        fjsontext = urlopen(self.URL_FOREAST).read()
+        fjsontext = requests.get(self.URL_FOREAST).content
         ff = open(self.filename_forecast,"wb")
         ff.write(fjsontext)
         ff.close()
         fdata = json.loads(fjsontext)
-        cjsontext = urlopen(self.URL_CURR).read()
+        cjsontext = requests.get(self.URL_CURR).content
         cf = open(self.filename_curr,"wb")
         cf.write(cjsontext)
         cf.close()
