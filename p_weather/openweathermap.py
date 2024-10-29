@@ -2,7 +2,10 @@ import os
 import time
 import json
 import datetime
-import requests
+import urllib.request
+from urllib.request import urlopen
+
+
 
 
 class WeatherInfo():
@@ -119,12 +122,40 @@ class OpenWeatherMap():
         return  OpenWeatherMap.MakeCoordinateKey(latitude) + OpenWeatherMap.MakeCoordinateKey(longitude)
 
     def FromWWW(self):
-        fjsontext = requests.get(self.URL_FOREAST).content
+        # 定义请求头
+        headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+        'Accept': 'text/html,application/json,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Connection': 'keep-alive',
+        'Referer': 'http://example.com',
+        }
+        request_forecast = urllib.request.Request(self.URL_FOREAST, headers=headers)
+        try:
+            with urllib.request.urlopen(request_forecast) as response:
+                # 获取响应状态码
+                print(f"Response Code: {response.getcode()}")
+                
+                # 打印响应头信息
+                print(f"Headers: {response.info()}")
+                
+                # 读取内容
+                content = response.read()
+                print(content)
+    
+        except urllib.error.HTTPError as e:
+            print(f"HTTPError: {e.code}")
+            print(f"Headers: {e.headers}")
+            print(f"Message: {e.reason}")
+        except Exception as e:
+            print(f"Error: {str(e)}")
+        fjsontext = urllib.request.urlopen(request_forecast).read()
         ff = open(self.filename_forecast,"wb")
         ff.write(fjsontext)
         ff.close()
         fdata = json.loads(fjsontext)
-        cjsontext = requests.get(self.URL_CURR).content
+        request_forecast = urllib.request.Request(self.URL_CURR, headers=headers)
+        cjsontext = urllib.request.urlopen(request_forecast).read()
         cf = open(self.filename_curr,"wb")
         cf.write(cjsontext)
         cf.close()

@@ -24,8 +24,8 @@ class AppConfig:
     SCR_BYTES_PER_LINE = int(SCR_WIDTH/8)
     
 
-    AP_SSID = '<your wifi ssid>'
-    AP_PASS = '<your wifi password>'
+    AP_SSID = ''
+    AP_PASS = ''
   
     
     URL = "<url that points to the bmp image>"

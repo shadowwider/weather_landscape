@@ -55,12 +55,17 @@ class WeatherLandscapeServer(BaseHTTPRequestHandler):
                databytes = f.read()               
                f.close()
                self.send_response(200)
-               s.send_header("Content-type", "image/bmp")
+               self.send_header("Content-type", "image/bmp")
             except:
                file_to_open = "File not found"
                self.send_response(404)
             self.end_headers()
             self.wfile.write(databytes)
+
+            return
+        # 如果路径不匹配，返回404
+        self.send_response(404)
+        self.end_headers()
 
 
     def IsFileTooOld(self, filename):
@@ -82,6 +87,7 @@ class WeatherLandscapeServer(BaseHTTPRequestHandler):
         img = img.transpose(Image.FLIP_TOP_BOTTOM)  
         
         img.save(eink_file_name) 
+   
         
         
         

@@ -1,24 +1,14 @@
 from appconfig import AppConfig
 from wifi import WiFi
-from eink import EInk
-from led import Led,LedDummy
-from esp32_regs import GetResetCauseText
 
+from led import Led,LedDummy
+
+from epd import EPD_2in9_Landscape,EPD_2in9_Portrait
 import time
 from machine import deepsleep
 
 
-def print_message(text=None):
-    eink.clear()
-    eink.print("*** %s *** Ver. %s" % (cfg.TITLE,cfg.VERSION))
-    eink.print("EInk %ix%i" % (cfg.SCR_WIDTH,cfg.SCR_HEIGHT) )
-    eink.print("SSID %s" % cfg.AP_SSID)
-    eink.print("URL %s" % cfg.URL)
-    if (text):
-        eink.print("")
-        eink.print(text)
-    eink.update()
-    led.blink()
+
 
 def print_error(text):
     global error_count 
@@ -32,8 +22,8 @@ cfg = AppConfig()
 #led = Led(cfg.PIN_LED)
 led = LedDummy()
 wlan = WiFi(cfg,led)
-eink = EInk(cfg)
 
+eink = EPD_2in9_Portrait()
 cfg.print()
 print("------")
 
@@ -55,13 +45,14 @@ while (True):
         continue
     
     img = wlan.load()
+
     if (img):
-        eink.show(img)
+        eink.display(img)
     else:
-        print_error("Image load failed.")
+        print("Image load failed.")
         continue
     
-
+    #
     deepsleep(cfg.IMAGE_RELOAD_PERIOD_MS)
 
 
@@ -71,3 +62,4 @@ while (True):
     
     
     
+

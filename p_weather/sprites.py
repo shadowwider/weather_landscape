@@ -1,5 +1,5 @@
 import os
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 import random
 
 class Sprites():
@@ -191,7 +191,19 @@ class Sprites():
                 list.append(name)
         
 
+    def DrawText(self, text, xpos, ypos, fontsize=24):
+        # 使用PIL的默认字体
+        font_path = "C:/Windows/Fonts/Arial.ttf"
+        font = ImageFont.truetype(font_path, fontsize)
+      
+        
+        # 创建绘图对象
+        draw = ImageDraw.Draw(self.img)
+        
+        # 绘制文本
+        draw.text((xpos, ypos), text, font=font, fill=self.BLACK)
 
+        # 不需要维护绘图对象，因为它会自动保存在画布上
 
 
     def DrawWind(self,speed,direction,xpos,tline):
