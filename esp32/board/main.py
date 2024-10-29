@@ -48,6 +48,7 @@ while (True):
 
     if (img):
         eink.display(img)
+        eink.sleep()  # Call the sleep method after displaying the image
     else:
         print("Image load failed.")
         continue
@@ -58,7 +59,6 @@ while (True):
 
 
 
-    
     
     
     
