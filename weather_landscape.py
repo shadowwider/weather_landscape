@@ -52,8 +52,36 @@ class WeatherLandscape:
         outfilepath = self.TmpFilePath(self.OUT_FILENAME+placekey+self.OUT_FILEEXT)
         img.save(outfilepath) 
         return outfilepath
+
+    def SaveImage2(self)->str:
+        img = self.MakeImage()
+        img = img.rotate(-90, expand=True)
+        img = img.transpose(Image.FLIP_TOP_BOTTOM)
+
+        img.save('/var/www/html/test.bmp')
+        return '/var/www/html/test.bmp'
+        
         
         
 
     def TmpFilePath(self,filename):
         return os.path.join(self.TMP_DIR,filename)
+
+    '''
+    server_name _;
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        }
+        location /chat {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    '''
