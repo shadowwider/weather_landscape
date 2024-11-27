@@ -25,7 +25,13 @@ class WiFi:
             
         self.led.blink()
         print('Trying to connect to %s...' % self.cfg.AP_SSID)
-        self.wlan.connect(self.cfg.AP_SSID, self.cfg.AP_PASS )
+        if not self.wlan.active():
+            print("Failed to activate WLAN interface.")
+            self.wlan.active(True)
+        try:
+            self.wlan.connect(self.cfg.AP_SSID, self.cfg.AP_PASS )
+        except OSError as e:
+            print(f"WiFi connection error----: {e}")
         for retry in range(200):
             connected = self.wlan.isconnected()
             if connected:
