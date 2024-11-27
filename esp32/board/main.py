@@ -41,7 +41,7 @@ while (True):
     
     rc = wlan.connect()
     if (not rc):
-        print_error("WiFi connection failed.")
+        #print("WiFi connection failed.")
         continue
     
     img = wlan.load()
